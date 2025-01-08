@@ -21,9 +21,9 @@ This project implements a **real-time data pipeline** that streams recent change
 
 | Technology       | Purpose                                           |
 |-------------------|---------------------------------------------------|
-| ![Kafka](https://upload.wikimedia.org/wikipedia/commons/6/64/Apache-kafka.svg) | Message streaming platform |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Apache_Kafka_logo.svg/langfr-800px-Apache_Kafka_logo.svg.png" alt="Kafka" height="200"> | Message streaming platform |
 | ![Elasticsearch](https://upload.wikimedia.org/wikipedia/commons/f/f4/Elasticsearch_logo.svg) | Data indexing and search engine |
-| ![Kibana](https://upload.wikimedia.org/wikipedia/commons/d/d0/Kibana_logo.svg) | Data visualization and analytics |
+| ![Kibana](https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt4466841eed0bf232/5d082a5e97f2babb5af907ee/logo-kibana-32-color.svg) | Data visualization and analytics |
 | ![Python](https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg) | Core implementation of producers and consumers |
 | ![Docker](https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg) | Containerization and orchestration |
 
