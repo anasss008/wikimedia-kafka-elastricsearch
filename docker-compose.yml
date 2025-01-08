@@ -23,9 +23,11 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
     container_name: elasticsearch
+    env_file: 
+      - .env
     environment:
       discovery.type: single-node
-      ELASTIC_PASSWORD: elastic
+      ELASTIC_PASSWORD:  ${ELASTIC_PASSWORD}
       xpack.security.enabled: false
     ports:
       - "9200:9200"
@@ -36,9 +38,11 @@ services:
     container_name: kibana
     depends_on:
       - elasticsearch
+    env_file: 
+      - .env
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-      ELASTICSEARCH_SERVICE_TOKEN: "AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYTo5M3NyeGJjV1FtLXJqZXBDWmZTZ1BR"
+      ELASTICSEARCH_SERVICE_TOKEN: ${ELASTICSEARCH_SERVICE_TOKEN}
     ports:
       - "5601:5601"
 
