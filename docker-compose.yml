@@ -1,0 +1,68 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.8.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.8.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    ports:
+      - "9092:9092"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    container_name: elasticsearch
+    environment:
+      discovery.type: single-node
+      ELASTIC_PASSWORD: elastic
+      xpack.security.enabled: false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.0
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_SERVICE_TOKEN: "AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYTo5M3NyeGJjV1FtLXJqZXBDWmZTZ1BR"
+    ports:
+      - "5601:5601"
+
+  sse-to-kafka:
+    build:
+      context: ./sse-to-kafka
+    container_name: sse-to-kafka
+    restart: on-failure
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKER: kafka:9092
+      KAFKA_TOPIC: wikimedia-recentchange
+
+  kafka-to-elasticsearch:
+    build:
+      context: ./kafka-to-elasticsearch
+    container_name: kafka-to-elasticsearch
+    restart: on-failure
+    depends_on:
+      - kafka
+      - elasticsearch
+    environment:
+      KAFKA_BROKER: kafka:9092
+      KAFKA_TOPIC: wikimedia-recentchange
+      ELASTICSEARCH_HOST: http://elasticsearch:9200
+      ELASTICSEARCH_INDEX: wikimedia
